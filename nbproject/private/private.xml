@@ -3,12 +3,25 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/APICuponex/src/java/pojos/UserSystem.java</file>
             <file>file:/C:/APICuponex/src/java/ws/MobileWS.java</file>
-            <file>file:/C:/APICuponex/src/java/ws/ApplicationConfig.java</file>
-            <file>file:/C:/APICuponex/src/java/ws/AdminWs.java</file>
-            <file>file:/C:/APICuponex/web/index.html</file>
+            <file>file:/C:/APICuponex/src/java/mybatis/mappers/CatalogoMapper.xml</file>
+            <file>file:/C:/APICuponex/src/java/mybatis/mappers/PacienteMapper.xml</file>
             <file>file:/C:/APICuponex/src/java/mybatis/MyBatisUtil.java</file>
+            <file>file:/C:/APICuponex/src/java/mybatis/mappers/UserSystemMapper.xml</file>
+            <file>file:/C:/APICuponex/src/java/pojos/Empresa.java</file>
+            <file>file:/C:/APICuponex/src/java/pojos/UserApp.java</file>
+            <file>file:/C:/APICuponex/src/java/mybatis/mappers/EmpresaMapper.xml</file>
+            <file>file:/C:/APICuponex/src/java/mybatis/mappers/UserApp.xml</file>
+            <file>file:/C:/APICuponex/src/java/pojos/Sucursal.java</file>
+            <file>file:/C:/APICuponex/src/java/ws/ApplicationConfig.java</file>
+            <file>file:/C:/APICuponex/src/java/pojos/Promoción.java</file>
+            <file>file:/C:/APICuponex/src/java/mybatis/mappers/MedicoMapper.xml</file>
+            <file>file:/C:/APICuponex/src/java/ws/AdminWs.java</file>
+            <file>file:/C:/APICuponex/src/java/mybatis/mappers/SucursalMapper.xml</file>
+            <file>file:/C:/APICuponex/web/index.html</file>
             <file>file:/C:/APICuponex/src/java/mybatis/myBatis-config.xml</file>
+            <file>file:/C:/APICuponex/src/java/mybatis/mappers/PromocionMapper.xml</file>
         </group>
     </open-files>
 </project-private>

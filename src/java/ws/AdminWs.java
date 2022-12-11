@@ -17,9 +17,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
 import mybatis.MyBatisUtil;
 import org.apache.ibatis.session.SqlSession;
-import pojos.Catalogo;
-import pojos.Medico;
-import pojos.Paciente;
+import pojos.UserSystem;
+import pojos.Empresa;
+import pojos.Sucursal;
 import pojos.Respuesta;
 import pojos.RespuestaLogin;
 
@@ -40,7 +40,7 @@ public class AdminWs {
             @FormParam("noPersonal") String noPersonal,
             @FormParam("password") String password)
     {
-        Medico medicoNuevo = new Medico();
+        Empresa medicoNuevo = new Empresa();
         medicoNuevo.setNoPersonal(noPersonal);
         medicoNuevo.setPassword(password);
         
@@ -50,7 +50,7 @@ public class AdminWs {
         {
             try 
             {
-                List<Medico> medicos = conexionDB.selectList("medicos.login", medicoNuevo);
+                List<Empresa> medicos = conexionDB.selectList("medicos.login", medicoNuevo);
                 conexionDB.commit();
                 if(medicos.size() > 0)
                 {
@@ -88,7 +88,7 @@ public class AdminWs {
             @FormParam("noPersonal") String noPersonal,
             @FormParam("password") String password)
     {
-        Medico medicoNuevo = new Medico();
+        Empresa medicoNuevo = new Empresa();
         medicoNuevo.setNoPersonal(noPersonal);
         medicoNuevo.setPassword(password);
         
@@ -98,7 +98,7 @@ public class AdminWs {
         {
             try 
             {
-                List<Medico> medicos = conexionDB.selectList("medicos.login", medicoNuevo);
+                List<Empresa> medicos = conexionDB.selectList("medicos.login", medicoNuevo);
                 conexionDB.commit();
                 if(medicos.size() > 0)
                 {
@@ -136,7 +136,7 @@ public class AdminWs {
             @FormParam("noPersonal") String noPersonal,
             @FormParam("password") String password)
     {
-        Medico medicoNuevo = new Medico();
+        Empresa medicoNuevo = new Empresa();
         medicoNuevo.setNoPersonal(noPersonal);
         medicoNuevo.setPassword(password);
         
@@ -146,7 +146,7 @@ public class AdminWs {
         {
             try 
             {
-                List<Medico> medicos = conexionDB.selectList("medicos.login", medicoNuevo);
+                List<Empresa> medicos = conexionDB.selectList("medicos.login", medicoNuevo);
                 conexionDB.commit();
                 if(medicos.size() > 0)
                 {
@@ -184,7 +184,7 @@ public class AdminWs {
             @FormParam("noPersonal") String noPersonal,
             @FormParam("password") String password)
     {
-        Medico medicoNuevo = new Medico();
+        Empresa medicoNuevo = new Empresa();
         medicoNuevo.setNoPersonal(noPersonal);
         medicoNuevo.setPassword(password);
         
@@ -194,7 +194,7 @@ public class AdminWs {
         {
             try 
             {
-                List<Medico> medicos = conexionDB.selectList("medicos.login", medicoNuevo);
+                List<Empresa> medicos = conexionDB.selectList("medicos.login", medicoNuevo);
                 conexionDB.commit();
                 if(medicos.size() > 0)
                 {
@@ -232,7 +232,7 @@ public class AdminWs {
             @FormParam("noPersonal") String noPersonal,
             @FormParam("password") String password)
     {
-        Medico medicoNuevo = new Medico();
+        Empresa medicoNuevo = new Empresa();
         medicoNuevo.setNoPersonal(noPersonal);
         medicoNuevo.setPassword(password);
         
@@ -242,7 +242,7 @@ public class AdminWs {
         {
             try 
             {
-                List<Medico> medicos = conexionDB.selectList("medicos.login", medicoNuevo);
+                List<Empresa> medicos = conexionDB.selectList("medicos.login", medicoNuevo);
                 conexionDB.commit();
                 if(medicos.size() > 0)
                 {
@@ -280,7 +280,7 @@ public class AdminWs {
             @FormParam("noPersonal") String noPersonal,
             @FormParam("password") String password)
     {
-        Medico medicoNuevo = new Medico();
+        Empresa medicoNuevo = new Empresa();
         medicoNuevo.setNoPersonal(noPersonal);
         medicoNuevo.setPassword(password);
         
@@ -290,7 +290,7 @@ public class AdminWs {
         {
             try 
             {
-                List<Medico> medicos = conexionDB.selectList("medicos.login", medicoNuevo);
+                List<Empresa> medicos = conexionDB.selectList("medicos.login", medicoNuevo);
                 conexionDB.commit();
                 if(medicos.size() > 0)
                 {
@@ -328,7 +328,7 @@ public class AdminWs {
             @FormParam("noPersonal") String noPersonal,
             @FormParam("password") String password)
     {
-        Medico medicoNuevo = new Medico();
+        Empresa medicoNuevo = new Empresa();
         medicoNuevo.setNoPersonal(noPersonal);
         medicoNuevo.setPassword(password);
         
@@ -338,7 +338,7 @@ public class AdminWs {
         {
             try 
             {
-                List<Medico> medicos = conexionDB.selectList("medicos.login", medicoNuevo);
+                List<Empresa> medicos = conexionDB.selectList("medicos.login", medicoNuevo);
                 conexionDB.commit();
                 if(medicos.size() > 0)
                 {
@@ -372,9 +372,9 @@ public class AdminWs {
     @Path("search/enterprise/{rfc}")
     @GET 
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Catalogo> getByCategoria(@PathParam("idCategoria") Integer idCategoria )
+    public List<UserSystem> getByCategoria(@PathParam("idCategoria") Integer idCategoria )
     {
-        List<Catalogo> catalogos = null;
+        List<UserSystem> catalogos = null;
         SqlSession conexionBD = MyBatisUtil.getSession();
         if(conexionBD != null)
         {

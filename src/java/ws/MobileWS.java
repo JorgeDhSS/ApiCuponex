@@ -10,7 +10,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
 import mybatis.MyBatisUtil;
 import org.apache.ibatis.session.SqlSession;
-import pojos.Catalogo;
+import pojos.UserSystem;
 
 
 @Path("catalogos")
@@ -22,9 +22,9 @@ public class MobileWS {
     @Path("bycategoria/{idCategoria}")
     @GET 
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Catalogo> getByCategoria(@PathParam("idCategoria") Integer idCategoria )
+    public List<UserSystem> getByCategoria(@PathParam("idCategoria") Integer idCategoria )
     {
-        List<Catalogo> catalogos = null;
+        List<UserSystem> catalogos = null;
         SqlSession conexionBD = MyBatisUtil.getSession();
         if(conexionBD != null)
         {

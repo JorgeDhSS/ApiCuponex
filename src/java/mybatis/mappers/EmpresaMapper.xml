@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="empresa">
+    <insert id="registrar" parameterType="pojos.Empresa">
+        INSERT INTO medico (nombre, nombreComercial, representante, webPage, rfc, status, ciudad, cp, calle, numero, tel, email)
+        VALUES (#{nombre}, #{nombreComercial}, #{representante}, #{webPage}, #{rfc}, 1, #{ciudad}, #{cp}, #{calle}, #{numero}, #{tel}, #{email})
+    </insert>
+    <update id="actualizar" parameterType="pojos.Empresa">
+        UPDATE enterprise SET nombre = #{nombre}, nombreComercial = #{nombreComercial}, representante = #{representante}, webPage = #{webPage}, rfc = #{rfc}, ciudad = #{ciudad}, calle = #{calle}, numero = #{numero}, cp = #{cp}, tel = #{tel}, email = #{email} WHERE id = #{id} 
+    </update>
+    <update id="eliminar" parameterType="int">
+        UPDATE enterprise SET status = 0 WHERE id = #{id} 
+    </update>
+    <select id="search" resultType="pojos.Empresa" parameterType="string">
+        SELECT * FROM enterprise
+        WHERE (nombre LIKE #{string})
+        OR (representante LIKE #{string})
+        OR (rfc LIKE #{string})
+    </select>
+</mapper>

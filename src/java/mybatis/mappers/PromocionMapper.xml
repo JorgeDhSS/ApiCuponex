@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="promocion">
+    <insert id="registrar" parameterType="pojos.Promocion">
+        INSERT INTO promocion (nombre, fechaIni, fechaFin, descripcion, restricciones, tipo, porcentaje, costo, status, categoria_id, enterprise_id)
+        VALUES (#{nombre}, #{fechaIni}, #{fechaFin}, #{descripcion}, #{restricciones}, #{tipo}, #{porcentaje}, #{costo}, 1, #{categoria}, #{enterprise_id})
+    </insert>
+    <insert id="asignarSucursal" parameterType="map">
+        INSERT INTO promocion (promocion_id, sucursal_id)
+        VALUES (#{promocion_id}, #{sucursal_id})
+    </insert>
+    <update id="actualizar" parameterType="pojos.Promocion">
+        UPDATE promocion SET nombre = #{nombre}, descripcion = #{descripcion}, restricciones = #{restricciones}, tipo = #{tipo}, porcentaje = #{porcentaje}, costo = #{costo}, categoria_id = #{categoria_id}, enterprise_id = #{enterprise_id} WHERE id = #{id} 
+    </update>
+    <update id="eliminar" parameterType="int">
+        UPDATE promocion SET status = 0 WHERE id = #{id} 
+    </update>
+    <select id="search" resultType="pojos.Promocion" parameterType="string">
+        SELECT * FROM promocion
+        WHERE (nombre LIKE #{string})
+        OR (fechaIni LIKE #{string})
+        OR (fechaFin LIKE #{string})
+    </select>
+</mapper>

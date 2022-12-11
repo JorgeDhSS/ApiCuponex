@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="user_app">
+    <insert id="registrar" parameterType="pojos.UserApp">
+        INSERT INTO promocion (nombre, apellidoP, apellidoM, tel, correo, password, calle, numero, status, fechaNac, foto)
+        VALUES (#{nombre}, #{apellidoP}, #{apellidoM}, #{tel}, #{correo}, #{password}, #{calle}, #{numero}, #{status}, #{fechaNac}, #{foto})
+    </insert>
+    <update id="actualizar" parameterType="pojos.UserApp">
+        UPDATE promocion SET nombre = #{nombre}, apellidoP = #{apellidoP}, apellidoM = #{apellidoM}, tel = #{tel}, correo = #{correo}, password = #{password}, calle = #{calle}, numero = #{numero}, fechaNac = #{fechaNac}, foto = #{foto} WHERE id = #{id} 
+    </update>
+</mapper>
