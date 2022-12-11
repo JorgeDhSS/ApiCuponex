@@ -11,4 +11,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <update id="actualizar" parameterType="pojos.UserApp">
         UPDATE promocion SET nombre = #{nombre}, apellidoP = #{apellidoP}, apellidoM = #{apellidoM}, tel = #{tel}, correo = #{correo}, password = #{password}, calle = #{calle}, numero = #{numero}, fechaNac = #{fechaNac}, foto = #{foto} WHERE id = #{id} 
     </update>
+    <select id="login" resultType="pojos.UserApp" parameterType="pojos.UserApp">
+        SELECT correo FROM user_app WHERE correo = #{correo} AND password = #{password}
+    </select>
 </mapper>

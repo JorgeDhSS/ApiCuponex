@@ -5,6 +5,7 @@
  */
 package ws;
 
+import java.util.HashMap;
 import java.util.List;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
@@ -21,7 +22,6 @@ import pojos.UserSystem;
 import pojos.Empresa;
 import pojos.Sucursal;
 import pojos.Respuesta;
-import pojos.RespuestaLogin;
 
 /**
  *
@@ -37,36 +37,36 @@ public class AdminWs {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Respuesta login(
-            @FormParam("noPersonal") String noPersonal,
+            @FormParam("correo") String correo,
             @FormParam("password") String password)
     {
-        Empresa medicoNuevo = new Empresa();
-        medicoNuevo.setNoPersonal(noPersonal);
-        medicoNuevo.setPassword(password);
+        UserSystem user = new UserSystem();
+        user.setCorreo(correo);
+        user.setPassword(password);
         
-        Respuesta respuestaWs = new Respuesta();
+        Respuesta respuesta = new Respuesta();
         SqlSession conexionDB = MyBatisUtil.getSession();
         if(conexionDB != null)
         {
             try 
             {
-                List<Empresa> medicos = conexionDB.selectList("medicos.login", medicoNuevo);
+                List<Empresa> medicos = conexionDB.selectList("user_system.login", user);
                 conexionDB.commit();
                 if(medicos.size() > 0)
                 {
-                    respuestaWs.setError(false);
-                    respuestaWs.setMensaje("Login correcto");
+                    respuesta.setError(false);
+                    respuesta.setMensaje("Login correcto");
                 }
                 else
                 {
-                    respuestaWs.setError(true);
-                    respuestaWs.setMensaje("Login incorrecto");
+                    respuesta.setError(true);
+                    respuesta.setMensaje("Login incorrecto");
                 }
             }
             catch(Exception e)
             {
-                respuestaWs.setError(false);
-                respuestaWs.setMensaje(e.getMessage());
+                respuesta.setError(false);
+                respuesta.setMensaje(e.getMessage());
             }
             finally
             {
@@ -75,22 +75,24 @@ public class AdminWs {
         }
         else
         {
-            respuestaWs.setError(true);
-            respuestaWs.setMensaje("No se pudo comprobar la información");
+            respuesta.setError(true);
+            respuesta.setMensaje("No se pudo comprobar la información");
         }
-        return respuestaWs;
+        return respuesta;
     }
     
     @Path("create/user")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Respuesta createUser(
-            @FormParam("noPersonal") String noPersonal,
-            @FormParam("password") String password)
+            @FormParam("nombre") String nombre,
+            @FormParam("apellidoP") String apellidoP,
+            @FormParam("apellidoM") String apellidoM,
+            @FormParam("correo") String correo,
+            @FormParam("password") String password
+    )
     {
-        Empresa medicoNuevo = new Empresa();
-        medicoNuevo.setNoPersonal(noPersonal);
-        medicoNuevo.setPassword(password);
+        UserSystem newUser = new UserSystem(nombre, apellidoP, apellidoM, correo, password, 1);
         
         Respuesta respuestaWs = new Respuesta();
         SqlSession conexionDB = MyBatisUtil.getSession();
@@ -98,17 +100,17 @@ public class AdminWs {
         {
             try 
             {
-                List<Empresa> medicos = conexionDB.selectList("medicos.login", medicoNuevo);
+                int resultado = conexionDB.insert("user_system.registrar", newUser);
                 conexionDB.commit();
-                if(medicos.size() > 0)
+                if(resultado > 0)
                 {
                     respuestaWs.setError(false);
-                    respuestaWs.setMensaje("Login correcto");
+                    respuestaWs.setMensaje("El usuario ha sido registrado");
                 }
                 else
                 {
                     respuestaWs.setError(true);
-                    respuestaWs.setMensaje("Login incorrecto");
+                    respuestaWs.setMensaje("No se ha podido registrar el usuario");
                 }
             }
             catch(Exception e)
@@ -124,55 +126,105 @@ public class AdminWs {
         else
         {
             respuestaWs.setError(true);
-            respuestaWs.setMensaje("No se pudo comprobar la información");
+            respuestaWs.setMensaje("No se ha podido registrar el usuario");
         }
         return respuestaWs;
+    }
+    
+    @Path("subirFoto/user/{idUsuario}")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    public Respuesta subirFoto(byte[] foto, @PathParam("idUsuario") Integer idUsuario)
+    {
+        Respuesta respuesta = new Respuesta();
+        respuesta.setError(Boolean.TRUE);
+        SqlSession conexionDB = MyBatisUtil.getSession();
+        if(conexionDB != null)
+        {
+            try
+            {
+                HashMap<String, Object> parametros = new HashMap<>(); 
+                parametros.put("foto", foto);
+                parametros.put("idUsuario", idUsuario);
+                int rowsAfected = conexionDB.update("user_system.subirFoto", parametros);
+                conexionDB.commit();
+                if(rowsAfected > 0)
+                {
+                    respuesta.setError(false);
+                    respuesta.setMensaje("Foto guardada correctamente");
+                }
+                else
+                {
+                    respuesta.setMensaje("Foto no guardada");
+                }
+            }
+            catch (Exception e)
+            {
+                respuesta.setMensaje(e.getMessage());
+            }
+            finally
+            {
+               conexionDB.close(); 
+            }
+        }
+        else
+        {
+            respuesta.setMensaje("Por el momento no hay conexión");
+        }
+        return respuesta;
     }
     
     @Path("update/user")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Respuesta updateUser(
-            @FormParam("noPersonal") String noPersonal,
-            @FormParam("password") String password)
+            @FormParam("nombre") String nombre,
+            @FormParam("apellidoP") String apellidoP,
+            @FormParam("apellidoM") String apellidoM,
+            @FormParam("password") String password,
+            @FormParam("idUsuario") Integer idUsuario
+    )
     {
-        Empresa medicoNuevo = new Empresa();
-        medicoNuevo.setNoPersonal(noPersonal);
-        medicoNuevo.setPassword(password);
-        
         Respuesta respuestaWs = new Respuesta();
+        UserSystem newUser = new UserSystem();
+        newUser.setIdUsuario(idUsuario);
+        newUser.setNombre(nombre);
+        newUser.setApellidoP(apellidoP);
+        newUser.setApellidoM(apellidoM);
+        newUser.setPassword(password);
+        
         SqlSession conexionDB = MyBatisUtil.getSession();
         if(conexionDB != null)
         {
-            try 
+            try
             {
-                List<Empresa> medicos = conexionDB.selectList("medicos.login", medicoNuevo);
+                int respuesta = conexionDB.update("user_system.actualizar", newUser);
                 conexionDB.commit();
-                if(medicos.size() > 0)
+                if(respuesta > 0)
                 {
                     respuestaWs.setError(false);
-                    respuestaWs.setMensaje("Login correcto");
+                    respuestaWs.setMensaje("El usuario se ha modificado");
                 }
                 else
                 {
                     respuestaWs.setError(true);
-                    respuestaWs.setMensaje("Login incorrecto");
+                    respuestaWs.setMensaje("El usuario no se ha modificado");
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                respuestaWs.setError(false);
+                respuestaWs.setError(true);
                 respuestaWs.setMensaje(e.getMessage());
             }
             finally
             {
-                conexionDB.close();
+               conexionDB.close(); 
             }
         }
         else
         {
             respuestaWs.setError(true);
-            respuestaWs.setMensaje("No se pudo comprobar la información");
+            respuestaWs.setMensaje("El usuario no se ha modificado");
         }
         return respuestaWs;
     }
@@ -180,47 +232,41 @@ public class AdminWs {
     @Path("delete/user")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Respuesta deleteUser(
-            @FormParam("noPersonal") String noPersonal,
-            @FormParam("password") String password)
+    public Respuesta deleteUser(@FormParam("idUsuario") Integer idUsuario)
     {
-        Empresa medicoNuevo = new Empresa();
-        medicoNuevo.setNoPersonal(noPersonal);
-        medicoNuevo.setPassword(password);
-        
         Respuesta respuestaWs = new Respuesta();
         SqlSession conexionDB = MyBatisUtil.getSession();
         if(conexionDB != null)
         {
-            try 
+            try
             {
-                List<Empresa> medicos = conexionDB.selectList("medicos.login", medicoNuevo);
+                int respuesta = conexionDB.update("user_system.eliminar", idUsuario);
                 conexionDB.commit();
-                if(medicos.size() > 0)
+                if(respuesta > 0)
                 {
                     respuestaWs.setError(false);
-                    respuestaWs.setMensaje("Login correcto");
+                    respuestaWs.setMensaje("El usuario se ha eliminado");
                 }
                 else
                 {
                     respuestaWs.setError(true);
-                    respuestaWs.setMensaje("Login incorrecto");
+                    respuestaWs.setMensaje("El usuario no se ha eliminado");
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                respuestaWs.setError(false);
+                respuestaWs.setError(true);
                 respuestaWs.setMensaje(e.getMessage());
             }
             finally
             {
-                conexionDB.close();
+               conexionDB.close(); 
             }
         }
         else
         {
             respuestaWs.setError(true);
-            respuestaWs.setMensaje("No se pudo comprobar la información");
+            respuestaWs.setMensaje("El usuario no se ha eliminado");
         }
         return respuestaWs;
     }

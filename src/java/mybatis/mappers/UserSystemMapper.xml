@@ -5,11 +5,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <mapper namespace="user_system">
     <insert id="registrar" parameterType="pojos.UserSystem">
-        INSERT INTO medico (nombre, apellidoP, apellidoM, correo, password, status, foto)
-        VALUES (#{nombre}, #{apellidoP}, #{apellidoM}, #{correo}, #{password}, 1, #{foto})
+        INSERT INTO user_system (nombre, apellidoP, apellidoM, correo, password, status)
+        VALUES (#{nombre}, #{apellidoP}, #{apellidoM}, #{correo}, #{password}, 1)
     </insert>
+    <update id="subirFoto" parameterType="map">
+        UPDATE user_system SET foto = #{foto} WHERE id = #{idUsuario} 
+    </update>
     <update id="actualizar" parameterType="pojos.UserSystem">
-        UPDATE user_system SET nombre = #{nombre}, apellidoP = #{apellidoP}, apellidoM = #{apellidoM}, password = #{password}, foto = #{foto} WHERE id = #{idUsuario} 
+        UPDATE user_system SET nombre = #{nombre}, apellidoP = #{apellidoP}, apellidoM = #{apellidoM}, password = #{password} WHERE id = #{idUsuario} 
     </update>
     <update id="eliminar" parameterType="int">
         UPDATE user_system SET status = 0 WHERE id = #{id} 

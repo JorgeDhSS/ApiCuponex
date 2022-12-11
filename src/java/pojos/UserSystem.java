@@ -14,15 +14,13 @@ public class UserSystem {
     public UserSystem() {
     }
 
-    public UserSystem(Integer idUsuario, String nombre, String apellidoP, String apellidoM, String correo, String password, Integer status, String foto) {
-        this.idUsuario = idUsuario;
+    public UserSystem(String nombre, String apellidoP, String apellidoM, String correo, String password, Integer status){
         this.nombre = nombre;
         this.apellidoP = apellidoP;
         this.apellidoM = apellidoM;
         this.correo = correo;
         this.password = password;
         this.status = status;
-        this.foto = foto;
     }
 
 
