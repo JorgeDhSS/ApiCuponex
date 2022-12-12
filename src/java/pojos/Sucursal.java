@@ -13,7 +13,7 @@ public class Sucursal {
     private Integer id;
     private String nombre;
     private String calle;
-    private Integer apellidoMaterno;
+    private Integer numero;
     private String cp;
     private String colonia;
     private String ciudad;
@@ -27,11 +27,10 @@ public class Sucursal {
     public Sucursal() {
     }
 
-    public Sucursal(Integer id, String nombre, String calle, Integer apellidoMaterno, String cp, String colonia, String ciudad, String tel, String latitud, String longitud, String encargado, Integer enterprise_id, Integer status) {
-        this.id = id;
+    public Sucursal(String nombre, String calle, Integer numero, String cp, String colonia, String ciudad, String tel, String latitud, String longitud, String encargado, Integer enterprise_id, Integer status) {
         this.nombre = nombre;
         this.calle = calle;
-        this.apellidoMaterno = apellidoMaterno;
+        this.numero = numero;
         this.cp = cp;
         this.colonia = colonia;
         this.ciudad = ciudad;
@@ -41,6 +40,21 @@ public class Sucursal {
         this.encargado = encargado;
         this.enterprise_id = enterprise_id;
         this.status = status;
+    }
+    
+    public Sucursal(Integer id, String nombre, String calle, Integer numero, String cp, String colonia, String ciudad, String tel, String latitud, String longitud, String encargado, Integer enterprise_id) {
+        this.id = id;
+        this.nombre = nombre;
+        this.calle = calle;
+        this.numero = numero;
+        this.cp = cp;
+        this.colonia = colonia;
+        this.ciudad = ciudad;
+        this.tel = tel;
+        this.latitud = latitud;
+        this.longitud = longitud;
+        this.encargado = encargado;
+        this.enterprise_id = enterprise_id;
     }
 
     public Integer getId() {
@@ -67,12 +81,12 @@ public class Sucursal {
         this.calle = calle;
     }
 
-    public Integer getApellidoMaterno() {
-        return apellidoMaterno;
+    public Integer getNoombre() {
+        return numero;
     }
 
-    public void setApellidoMaterno(Integer apellidoMaterno) {
-        this.apellidoMaterno = apellidoMaterno;
+    public void setNombre(Integer numero) {
+        this.numero = numero;
     }
 
     public String getCp() {

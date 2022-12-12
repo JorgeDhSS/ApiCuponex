@@ -5,8 +5,6 @@
         <group>
             <file>file:/C:/APICuponex/src/java/pojos/UserSystem.java</file>
             <file>file:/C:/APICuponex/src/java/ws/MobileWS.java</file>
-            <file>file:/C:/APICuponex/src/java/mybatis/mappers/CatalogoMapper.xml</file>
-            <file>file:/C:/APICuponex/src/java/mybatis/mappers/PacienteMapper.xml</file>
             <file>file:/C:/APICuponex/src/java/mybatis/MyBatisUtil.java</file>
             <file>file:/C:/APICuponex/src/java/mybatis/mappers/UserSystemMapper.xml</file>
             <file>file:/C:/APICuponex/src/java/pojos/Empresa.java</file>
@@ -16,7 +14,7 @@
             <file>file:/C:/APICuponex/src/java/pojos/Sucursal.java</file>
             <file>file:/C:/APICuponex/src/java/ws/ApplicationConfig.java</file>
             <file>file:/C:/APICuponex/src/java/pojos/Promoción.java</file>
-            <file>file:/C:/APICuponex/src/java/mybatis/mappers/MedicoMapper.xml</file>
+            <file>file:/C:/APICuponex/src/java/pojos/Respuesta.java</file>
             <file>file:/C:/APICuponex/src/java/ws/AdminWs.java</file>
             <file>file:/C:/APICuponex/src/java/mybatis/mappers/SucursalMapper.xml</file>
             <file>file:/C:/APICuponex/web/index.html</file>

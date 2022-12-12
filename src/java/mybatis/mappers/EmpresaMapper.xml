@@ -20,4 +20,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         OR (representante LIKE #{string})
         OR (rfc LIKE #{string})
     </select>
+    <select id="getEnterprise" resultType="pojos.Empresa" parameterType="int">
+        SELECT * FROM enterprise WHERE id = #{id}
+    </select>
 </mapper>

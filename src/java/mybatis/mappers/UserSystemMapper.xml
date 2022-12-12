@@ -11,6 +11,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <update id="subirFoto" parameterType="map">
         UPDATE user_system SET foto = #{foto} WHERE id = #{idUsuario} 
     </update>
+    <select id="all" resultType="pojos.UserSystem">
+        SELECT id, nombre, apellidoP, apellidoM, correo FROM user_system
+    </select>
+    <select id="getUser" resultType="pojos.UserSystem" parameterType="int">
+        SELECT id, nombre, apellidoP, apellidoM, correo, password FROM user_system WHERE id = #{idUsuario}
+    </select>
     <update id="actualizar" parameterType="pojos.UserSystem">
         UPDATE user_system SET nombre = #{nombre}, apellidoP = #{apellidoP}, apellidoM = #{apellidoM}, password = #{password} WHERE id = #{idUsuario} 
     </update>
