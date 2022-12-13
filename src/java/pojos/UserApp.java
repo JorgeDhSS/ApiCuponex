@@ -25,8 +25,19 @@ public class UserApp {
     public UserApp() {
     }
 
-    public UserApp(Integer id, String nombre, String apellidoP, String apellidoM, String tel, String correo, String password, String calle, Integer numero, String fechaNac, String foto) {
+    public UserApp(Integer id, String nombre, String apellidoP, String apellidoM, String tel, String password, String calle, Integer numero, String fechaNac) {
         this.id = id;
+        this.nombre = nombre;
+        this.apellidoP = apellidoP;
+        this.apellidoM = apellidoM;
+        this.tel = tel;
+        this.password = password;
+        this.calle = calle;
+        this.numero = numero;
+        this.fechaNac = fechaNac;
+    }
+
+    public UserApp(String nombre, String apellidoP, String apellidoM, String tel, String correo, String password, String calle, Integer numero, String fechaNac) {
         this.nombre = nombre;
         this.apellidoP = apellidoP;
         this.apellidoM = apellidoM;
@@ -36,7 +47,6 @@ public class UserApp {
         this.calle = calle;
         this.numero = numero;
         this.fechaNac = fechaNac;
-        this.foto = foto;
     }
 
     public Integer getId() {

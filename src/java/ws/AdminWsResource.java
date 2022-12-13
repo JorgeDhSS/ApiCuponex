@@ -7,32 +7,34 @@ package ws;
 
 import java.util.HashMap;
 import java.util.List;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PUT;
 import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.UriInfo;
 import mybatis.MyBatisUtil;
 import org.apache.ibatis.session.SqlSession;
-import pojos.UserSystem;
 import pojos.Empresa;
-import pojos.Sucursal;
+import pojos.Promocion;
 import pojos.Respuesta;
+import pojos.Sucursal;
+import pojos.UserSystem;
 
 /**
+ * REST Web Service
  *
  * @author Jorge
  */
-@Path("admin")
-public class AdminWs {
-    @Context
-    private UriInfo context;//propiedad global de información compartida entre los servicios (información de AplicationConfig)
-    
-    
+@Path("adminWs")
+public class AdminWsResource {
+
     @Path("login")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
@@ -50,9 +52,9 @@ public class AdminWs {
         {
             try 
             {
-                List<Empresa> medicos = conexionDB.selectList("user_system.login", user);
+                List<UserSystem> usuarios = conexionDB.selectList("user_system.login", user);
                 conexionDB.commit();
-                if(medicos.size() > 0)
+                if(usuarios.size() > 0)
                 {
                     respuesta.setError(false);
                     respuesta.setMensaje("Login correcto");
@@ -76,7 +78,7 @@ public class AdminWs {
         else
         {
             respuesta.setError(true);
-            respuesta.setMensaje("No se pudo comprobar la información");
+            respuesta.setMensaje("No se pudo comprobar la información, error de conexión");
         }
         return respuesta;
     }
@@ -126,7 +128,7 @@ public class AdminWs {
         else
         {
             respuestaWs.setError(true);
-            respuestaWs.setMensaje("No se ha podido registrar el usuario");
+            respuestaWs.setMensaje("No se ha podido registrar el usuario, error de conexión");
         }
         return respuestaWs;
     }
@@ -172,6 +174,31 @@ public class AdminWs {
             respuesta.setMensaje("Por el momento no hay conexión");
         }
         return respuesta;
+    }
+    
+    @Path("user/getPhoto/{id}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public UserSystem userPhoto(@PathParam("id") Integer id)
+    {
+        UserSystem user = null;
+        SqlSession conexionDB = MyBatisUtil.getSession();
+        if(conexionDB != null)
+        {
+            try
+            {
+                user = conexionDB.selectOne("user_system.obtenerFoto", id);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+            finally
+            {
+               conexionDB.close(); 
+            }
+        }
+        return user;
     }
     
     @Path("user/all")
@@ -225,7 +252,7 @@ public class AdminWs {
     }
 
     @Path("user/update")
-    @POST
+    @PUT
     @Produces(MediaType.APPLICATION_JSON)
     public Respuesta updateUser(
             @FormParam("nombre") String nombre,
@@ -274,13 +301,13 @@ public class AdminWs {
         else
         {
             respuestaWs.setError(true);
-            respuestaWs.setMensaje("El usuario no se ha modificado");
+            respuestaWs.setMensaje("El usuario no se ha modificado, error de conexión");
         }
         return respuestaWs;
     }
     
     @Path("user/delete")
-    @POST
+    @DELETE
     @Produces(MediaType.APPLICATION_JSON)
     public Respuesta deleteUser(@FormParam("idUsuario") Integer idUsuario)
     {
@@ -316,7 +343,7 @@ public class AdminWs {
         else
         {
             respuestaWs.setError(true);
-            respuestaWs.setMensaje("El usuario no se ha eliminado");
+            respuestaWs.setMensaje("El usuario no se ha eliminado, error de conexión");
         }
         return respuestaWs;
     }
@@ -382,13 +409,13 @@ public class AdminWs {
         else
         {
             respuestaWs.setError(true);
-            respuestaWs.setMensaje("No se ha podido registrar la empresa");
+            respuestaWs.setMensaje("No se ha podido registrar la empresa, error de conexión");
         }
         return respuestaWs;
     }
     
     @Path("enterprise/update")
-    @POST
+    @PUT
     @Produces(MediaType.APPLICATION_JSON)
     public Respuesta updateEnterprise(
             @FormParam("id") Integer id,
@@ -456,7 +483,7 @@ public class AdminWs {
     }
     
     @Path("enterprise/delete")
-    @POST
+    @DELETE
     @Produces(MediaType.APPLICATION_JSON)
     public Respuesta deleteEnterprise(@FormParam("id") Integer id)
     {
@@ -492,7 +519,7 @@ public class AdminWs {
         else
         {
             respuestaWs.setError(true);
-            respuestaWs.setMensaje("La empresa no se ha eliminado");
+            respuestaWs.setMensaje("La empresa no se ha eliminado, error de conexión");
         }
         return respuestaWs;
     }
@@ -597,13 +624,13 @@ public class AdminWs {
         else
         {
             respuestaWs.setError(true);
-            respuestaWs.setMensaje("No se ha podido registrar la sucursal");
+            respuestaWs.setMensaje("No se ha podido registrar la sucursal, error de conexión");
         }
         return respuestaWs;
     }
     
     @Path("sucursal/update")
-    @POST
+    @PUT
     @Produces(MediaType.APPLICATION_JSON)
     public Respuesta updateSucursal(
             @FormParam("id") Integer id,
@@ -710,7 +737,7 @@ public class AdminWs {
     }
     
     @Path("sucursal/delete")
-    @POST
+    @DELETE
     @Produces(MediaType.APPLICATION_JSON)
     public Respuesta deleteSucursal(@FormParam("id") Integer id)
     {
@@ -746,8 +773,282 @@ public class AdminWs {
         else
         {
             respuestaWs.setError(true);
-            respuestaWs.setMensaje("La sucursal no se ha eliminado");
+            respuestaWs.setMensaje("La sucursal no se ha eliminado, error de conexión");
         }
         return respuestaWs;
+    }
+    
+    @Path("promocion/create")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    public Respuesta createPromocion(
+            @FormParam("nombre") String nombre,
+            @FormParam("fechaIni") String fechaIni,
+            @FormParam("fechaFin") String fechaFin,
+            @FormParam("descripcion") String descripcion,
+            @FormParam("restricciones") String restricciones,
+            @FormParam("tipo") Integer tipo,
+            @FormParam("porcentaje") Integer porcentaje,
+            @FormParam("costo") Integer costo,
+            @FormParam("categoria_id")Integer categoria_id,
+            @FormParam("enterprise_id") Integer enterprise_id)
+    {
+        Promocion promo = new Promocion(nombre, fechaIni, fechaFin, descripcion, restricciones, tipo, porcentaje, costo, categoria_id, enterprise_id);
+        
+        Respuesta respuestaWs = new Respuesta();
+        SqlSession conexionDB = MyBatisUtil.getSession();
+        if(conexionDB != null)
+        {
+            try 
+            {
+                int resultado = conexionDB.insert("promocion.registrar", promo);
+                conexionDB.commit();
+                if(resultado > 0)
+                {
+                    respuestaWs.setError(false);
+                    respuestaWs.setMensaje("La promoción ha sido registrada");
+                }
+                else
+                {
+                    respuestaWs.setError(true);
+                    respuestaWs.setMensaje("No se ha podido registrar la promoción");
+                }
+            }
+            catch(Exception e)
+            {
+                respuestaWs.setError(false);
+                respuestaWs.setMensaje(e.getMessage());
+            }
+            finally
+            {
+                conexionDB.close();
+            }
+        }
+        else
+        {
+            respuestaWs.setError(true);
+            respuestaWs.setMensaje("No se ha podido registrar la promoción, error de conexión");
+        }
+        return respuestaWs;
+    }
+    
+    @Path("promocion/update")
+    @PUT
+    @Produces(MediaType.APPLICATION_JSON)
+    public Respuesta updatePromocion(
+            @FormParam("id") Integer id,
+            @FormParam("nombre") String nombre,
+            @FormParam("fechaIni") String fechaIni,
+            @FormParam("fechaFin") String fechaFin,
+            @FormParam("descripcion") String descripcion,
+            @FormParam("restricciones") String restricciones,
+            @FormParam("tipo") Integer tipo,
+            @FormParam("porcentaje") Integer porcentaje,
+            @FormParam("costo") Integer costo,
+            @FormParam("categoria_id")Integer categoria_id,
+            @FormParam("enterprise_id") Integer enterprise_id)
+    {
+        Promocion promo = new Promocion(id, nombre, fechaIni, fechaFin, descripcion, restricciones, tipo, porcentaje, costo, categoria_id, enterprise_id);
+        
+        Respuesta respuestaWs = new Respuesta();
+        SqlSession conexionDB = MyBatisUtil.getSession();
+        if(conexionDB != null)
+        {
+            try 
+            {
+                int resultado = conexionDB.insert("promocion.actualizar", promo);
+                conexionDB.commit();
+                if(resultado > 0)
+                {
+                    respuestaWs.setError(false);
+                    respuestaWs.setMensaje("La promoción ha sido actualizada");
+                }
+                else
+                {
+                    respuestaWs.setError(true);
+                    respuestaWs.setMensaje("No se ha podido actualizar la promoción");
+                }
+            }
+            catch(Exception e)
+            {
+                respuestaWs.setError(false);
+                respuestaWs.setMensaje(e.getMessage());
+            }
+            finally
+            {
+                conexionDB.close();
+            }
+        }
+        else
+        {
+            respuestaWs.setError(true);
+            respuestaWs.setMensaje("No se ha podido actualizar la promoción, error de conexión");
+        }
+        return respuestaWs;
+    }
+    
+    @Path("promocion/delete")
+    @DELETE
+    @Produces(MediaType.APPLICATION_JSON)
+    public Respuesta deletePromocion(@FormParam("id") Integer id)
+    {
+        Respuesta respuestaWs = new Respuesta();
+        SqlSession conexionDB = MyBatisUtil.getSession();
+        if(conexionDB != null)
+        {
+            try
+            {
+                int respuesta = conexionDB.update("promocion.eliminar", id);
+                conexionDB.commit();
+                if(respuesta > 0)
+                {
+                    respuestaWs.setError(false);
+                    respuestaWs.setMensaje("La promoción se ha eliminado");
+                }
+                else
+                {
+                    respuestaWs.setError(true);
+                    respuestaWs.setMensaje("La promoción no se ha eliminado");
+                }
+            }
+            catch (Exception e)
+            {
+                respuestaWs.setError(true);
+                respuestaWs.setMensaje(e.getMessage());
+            }
+            finally
+            {
+               conexionDB.close(); 
+            }
+        }
+        else
+        {
+            respuestaWs.setError(true);
+            respuestaWs.setMensaje("La promoción no se ha eliminado, error de conexión");
+        }
+        return respuestaWs;
+    }
+    
+    @Path("promocion/search/{string}")
+    @GET 
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Promocion> searchPromocion(@PathParam("string") String string)
+    {
+        List<Promocion> promociones = null;
+        SqlSession conexionBD = MyBatisUtil.getSession();
+        if(conexionBD != null)
+        {
+            try
+            {
+                promociones = conexionBD.selectList("promocion.search", string);
+            } 
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            } 
+            finally 
+            {
+                conexionBD.close();
+            }
+        }
+        return promociones;
+    }
+    
+    @Path("promocion/aisgnarsucursales/{idPromocion}")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    public Respuesta createPromocion(
+            @PathParam("idPromocion") Integer id,
+            @FormParam("sucursales") Integer[] sucursales)
+    {
+        Respuesta respuestaWs = new Respuesta();
+        SqlSession conexionDB = MyBatisUtil.getSession();
+        if(conexionDB != null)
+        {
+            try 
+            {
+                int counter = 0;
+                for(int i=0; i <= sucursales.length; i++)
+                {
+                    HashMap<String, Object> parametros = new HashMap<>(); 
+                    parametros.put("promocion_id", id);
+                    parametros.put("sucursal_id", sucursales[i]);
+                    int resultado = conexionDB.insert("promocion.asignarSucursal", parametros);
+                    conexionDB.commit();
+                    if(resultado > 0)
+                    {
+                        counter++;
+                    }
+                }
+                if(counter > 0)
+                {
+                    respuestaWs.setError(false);
+                    respuestaWs.setMensaje("La promoción se ha registrado en "+counter+" sucursales");
+                }
+                else
+                {
+                    respuestaWs.setError(true);
+                    respuestaWs.setMensaje("No se ha podido registrar la promoción en las sucursales");
+                }
+            }
+            catch(Exception e)
+            {
+                respuestaWs.setError(false);
+                respuestaWs.setMensaje(e.getMessage());
+            }
+            finally
+            {
+                conexionDB.close();
+            }
+        }
+        else
+        {
+            respuestaWs.setError(true);
+            respuestaWs.setMensaje("No se ha podido registrar la promoción en las sucursales, error de conexión");
+        }
+        return respuestaWs;
+    }
+    
+    @Path("promocion/subirFoto/{idUsuario}")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    public Respuesta subirFotoPromocion(byte[] foto, @PathParam("id") Integer id)
+    {
+        Respuesta respuesta = new Respuesta();
+        respuesta.setError(Boolean.TRUE);
+        SqlSession conexionDB = MyBatisUtil.getSession();
+        if(conexionDB != null)
+        {
+            try
+            {
+                HashMap<String, Object> parametros = new HashMap<>(); 
+                parametros.put("foto", foto);
+                parametros.put("id", id);
+                int rowsAfected = conexionDB.update("promocion.subirFoto", parametros);
+                conexionDB.commit();
+                if(rowsAfected > 0)
+                {
+                    respuesta.setError(false);
+                    respuesta.setMensaje("Foto guardada correctamente");
+                }
+                else
+                {
+                    respuesta.setMensaje("Foto no guardada");
+                }
+            }
+            catch (Exception e)
+            {
+                respuesta.setMensaje(e.getMessage());
+            }
+            finally
+            {
+               conexionDB.close(); 
+            }
+        }
+        else
+        {
+            respuesta.setMensaje("Por el momento no hay conexión");
+        }
+        return respuesta;
     }
 }

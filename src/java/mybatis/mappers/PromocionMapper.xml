@@ -24,4 +24,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         OR (fechaIni LIKE #{string})
         OR (fechaFin LIKE #{string})
     </select>
+    <update id="subirFoto" parameterType="map">
+        UPDATE promocion SET foto = #{foto} WHERE id = #{id} 
+    </update>
+    <select id="getCategorias" resultType="pojos.Categoria">
+        SELECT * FROM categorias
+    </select>
+    <select id="byCategoria" resultType="pojos.Promocion" parameterType="int">
+        SELECT nombre, fechaIni, fechaFin, tipo, empresa.nombre as 'empresa' FROM promocion INNER JOIN empresa ON promocion.enterprise_id = empresa.id
+        WHERE categoria_id = #{categoria_id}
+    </select>
+    <select id="details" resultType="pojos.Promocion" parameterType="int">
+        SELECT nombre, descripción, fechaIni, fechaFin, restricciones, tipo, porcentaje, costo FROM promocion 
+        WHERE id = #{id}
+    </select>
+    <select id="obtenerFoto" parameterType="int" resultType="pojos.Promocion">
+        SELECT TO_BASE64(foto) as 'foto' FROM promocion WHERE id = #{id}
+    </select>
 </mapper>

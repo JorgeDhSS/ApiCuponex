@@ -9,9 +9,10 @@ package pojos;
  *
  * @author Jorge
  */
-public class Promoción {
+public class Promocion {
     private Integer id;
     private String nombre; 
+    private String foto;
     private String fechaIni;
     private String fechaFin;
     private String descripcion;
@@ -23,10 +24,10 @@ public class Promoción {
     private Integer categoria;
     private Integer enterprise_id;
 
-    public Promoción() {
+    public Promocion() {
     }
 
-    public Promoción(Integer id, String nombre, String fechaIni, String fechaFin, String descripcion, String restricciones, Integer tipo, Integer porcentaje, Integer costo, Integer status, Integer categoria, Integer enterprise_id) {
+    public Promocion(Integer id, String nombre, String fechaIni, String fechaFin, String descripcion, String restricciones, Integer tipo, Integer porcentaje, Integer costo, Integer categoria, Integer enterprise_id) {
         this.id = id;
         this.nombre = nombre;
         this.fechaIni = fechaIni;
@@ -36,7 +37,19 @@ public class Promoción {
         this.tipo = tipo;
         this.porcentaje = porcentaje;
         this.costo = costo;
-        this.status = status;
+        this.categoria = categoria;
+        this.enterprise_id = enterprise_id;
+    }
+    
+    public Promocion(String nombre, String fechaIni, String fechaFin, String descripcion, String restricciones, Integer tipo, Integer porcentaje, Integer costo, Integer categoria, Integer enterprise_id) {
+        this.nombre = nombre;
+        this.fechaIni = fechaIni;
+        this.fechaFin = fechaFin;
+        this.descripcion = descripcion;
+        this.restricciones = restricciones;
+        this.tipo = tipo;
+        this.porcentaje = porcentaje;
+        this.costo = costo;
         this.categoria = categoria;
         this.enterprise_id = enterprise_id;
     }
@@ -135,5 +148,13 @@ public class Promoción {
 
     public void setEnterprise_id(Integer enterprise_id) {
         this.enterprise_id = enterprise_id;
+    }
+
+    public String getFoto() {
+        return foto;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
     }
 }

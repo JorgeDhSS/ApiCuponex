@@ -29,8 +29,8 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
-        resources.add(ws.AdminWs.class);
-        resources.add(ws.MobileWS.class);
+        resources.add(ws.AdminWsResource.class);
+        resources.add(ws.MobileWsResource.class);
     }
     
 }
