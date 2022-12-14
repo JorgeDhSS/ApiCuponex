@@ -5,24 +5,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <mapper namespace="promocion">
     <insert id="registrar" parameterType="pojos.Promocion">
-        INSERT INTO promocion (nombre, fechaIni, fechaFin, descripcion, restricciones, tipo, porcentaje, costo, status, categoria_id, enterprise_id)
+        INSERT INTO promocion (nombre, fechaIni, fechaFin, descripcion, restricciones, tipo, porcentaje, costo, status, categoria, enterprise_id)
         VALUES (#{nombre}, #{fechaIni}, #{fechaFin}, #{descripcion}, #{restricciones}, #{tipo}, #{porcentaje}, #{costo}, 1, #{categoria}, #{enterprise_id})
     </insert>
     <insert id="asignarSucursal" parameterType="map">
-        INSERT INTO promocion (promocion_id, sucursal_id)
+        INSERT INTO promocion_sucursal (promocion_id, sucursal_id)
         VALUES (#{promocion_id}, #{sucursal_id})
     </insert>
+    <delete id="eliminarSucursal" parameterType="map">
+        DELETE FROM promocion_sucursal WHERE promocion_id = #{promocion_id} AND sucursal_id = #{sucursal_id}
+    </delete>
     <update id="actualizar" parameterType="pojos.Promocion">
-        UPDATE promocion SET nombre = #{nombre}, descripcion = #{descripcion}, restricciones = #{restricciones}, tipo = #{tipo}, porcentaje = #{porcentaje}, costo = #{costo}, categoria_id = #{categoria_id}, enterprise_id = #{enterprise_id} WHERE id = #{id} 
+        UPDATE promocion SET nombre = #{nombre}, descripcion = #{descripcion}, restricciones = #{restricciones}, tipo = #{tipo}, porcentaje = #{porcentaje}, costo = #{costo}, categoria = #{categoria}, enterprise_id = #{enterprise_id} WHERE id = #{id} 
     </update>
     <update id="eliminar" parameterType="int">
         UPDATE promocion SET status = 0 WHERE id = #{id} 
     </update>
     <select id="search" resultType="pojos.Promocion" parameterType="string">
         SELECT * FROM promocion
-        WHERE (nombre LIKE #{string})
-        OR (fechaIni LIKE #{string})
-        OR (fechaFin LIKE #{string})
+        WHERE nombre LIKE #{string}
+        OR fechaIni LIKE #{string}
+        OR fechaFin LIKE #{string}
     </select>
     <update id="subirFoto" parameterType="map">
         UPDATE promocion SET foto = #{foto} WHERE id = #{id} 
@@ -35,7 +38,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         WHERE categoria_id = #{categoria_id}
     </select>
     <select id="details" resultType="pojos.Promocion" parameterType="int">
-        SELECT nombre, descripción, fechaIni, fechaFin, restricciones, tipo, porcentaje, costo FROM promocion 
+        SELECT nombre, descripcion, fechaIni, fechaFin, restricciones, tipo, porcentaje, costo FROM promocion 
         WHERE id = #{id}
     </select>
     <select id="obtenerFoto" parameterType="int" resultType="pojos.Promocion">

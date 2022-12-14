@@ -35,6 +35,9 @@ import pojos.UserSystem;
 @Path("adminWs")
 public class AdminWsResource {
 
+    @Context
+    private UriInfo context;
+    
     @Path("login")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
@@ -535,7 +538,7 @@ public class AdminWsResource {
         {
             try
             {
-                empresas = conexionBD.selectList("empresa.search", string);
+                empresas = conexionBD.selectList("empresa.search", "%"+string+"%");
             } 
             catch (Exception e)
             {
@@ -697,7 +700,7 @@ public class AdminWsResource {
         {
             try
             {
-                sucursales = conexionBD.selectList("sucursal.search", string);
+                sucursales = conexionBD.selectList("sucursal.search", "%"+string+"%");
             } 
             catch (Exception e)
             {
@@ -940,7 +943,7 @@ public class AdminWsResource {
         {
             try
             {
-                promociones = conexionBD.selectList("promocion.search", string);
+                promociones = conexionBD.selectList("promocion.search", "%"+string+"%");
             } 
             catch (Exception e)
             {
@@ -954,12 +957,12 @@ public class AdminWsResource {
         return promociones;
     }
     
-    @Path("promocion/aisgnarsucursales/{idPromocion}")
+    @Path("promocion/aisgnarSucursales/{idPromocion}/{idSucursal}")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Respuesta createPromocion(
+    public Respuesta asingSucursalPromo(
             @PathParam("idPromocion") Integer id,
-            @FormParam("sucursales") Integer[] sucursales)
+            @PathParam("idSucursal") Integer idSucursal)
     {
         Respuesta respuestaWs = new Respuesta();
         SqlSession conexionDB = MyBatisUtil.getSession();
@@ -968,27 +971,20 @@ public class AdminWsResource {
             try 
             {
                 int counter = 0;
-                for(int i=0; i <= sucursales.length; i++)
-                {
-                    HashMap<String, Object> parametros = new HashMap<>(); 
-                    parametros.put("promocion_id", id);
-                    parametros.put("sucursal_id", sucursales[i]);
-                    int resultado = conexionDB.insert("promocion.asignarSucursal", parametros);
-                    conexionDB.commit();
-                    if(resultado > 0)
-                    {
-                        counter++;
-                    }
-                }
-                if(counter > 0)
+                HashMap<String, Object> parametros = new HashMap<>(); 
+                parametros.put("promocion_id", id);
+                parametros.put("sucursal_id", idSucursal);
+                int resultado = conexionDB.insert("promocion.asignarSucursal", parametros);
+                conexionDB.commit();
+                if(resultado > 0)
                 {
                     respuestaWs.setError(false);
-                    respuestaWs.setMensaje("La promoción se ha registrado en "+counter+" sucursales");
+                    respuestaWs.setMensaje("La promoción se ha registrado en la sucursal indicada");
                 }
                 else
                 {
                     respuestaWs.setError(true);
-                    respuestaWs.setMensaje("No se ha podido registrar la promoción en las sucursales");
+                    respuestaWs.setMensaje("No se ha podido registrar la promoción en la sucursal indicada");
                 }
             }
             catch(Exception e)
@@ -1009,7 +1005,55 @@ public class AdminWsResource {
         return respuestaWs;
     }
     
-    @Path("promocion/subirFoto/{idUsuario}")
+    @Path("promocion/eliminarSucursal/{idPromocion}/{idSucursal}")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    public Respuesta eliminarSucursalPromo(
+            @PathParam("idPromocion") Integer id,
+            @PathParam("idSucursal") Integer idSucursal)
+    {
+        Respuesta respuestaWs = new Respuesta();
+        SqlSession conexionDB = MyBatisUtil.getSession();
+        if(conexionDB != null)
+        {
+            try 
+            {
+                int counter = 0;
+                HashMap<String, Object> parametros = new HashMap<>(); 
+                parametros.put("promocion_id", id);
+                parametros.put("sucursal_id", idSucursal);
+                int resultado = conexionDB.delete("promocion.eliminarSucursal", parametros);
+                conexionDB.commit();
+                if(resultado > 0)
+                {
+                    respuestaWs.setError(false);
+                    respuestaWs.setMensaje("La promoción se ha eliminado en la sucursal indicada");
+                }
+                else
+                {
+                    respuestaWs.setError(true);
+                    respuestaWs.setMensaje("No se ha podido eliminar la promoción en la sucursal indicada");
+                }
+            }
+            catch(Exception e)
+            {
+                respuestaWs.setError(false);
+                respuestaWs.setMensaje(e.getMessage());
+            }
+            finally
+            {
+                conexionDB.close();
+            }
+        }
+        else
+        {
+            respuestaWs.setError(true);
+            respuestaWs.setMensaje("No se ha podido eliminar la promoción en las sucursales, error de conexión");
+        }
+        return respuestaWs;
+    }
+    
+    @Path("promocion/subirFoto/{id}")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Respuesta subirFotoPromocion(byte[] foto, @PathParam("id") Integer id)
@@ -1050,5 +1094,30 @@ public class AdminWsResource {
             respuesta.setMensaje("Por el momento no hay conexión");
         }
         return respuesta;
+    }
+    
+    @Path("promocion/getPhoto/{id}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Promocion promoPhoto(@PathParam("id") Integer id)
+    {
+        Promocion promo = null;
+        SqlSession conexionDB = MyBatisUtil.getSession();
+        if(conexionDB != null)
+        {
+            try
+            {
+                promo = conexionDB.selectOne("promocion.obtenerFoto", id);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+            finally
+            {
+               conexionDB.close(); 
+            }
+        }
+        return promo;
     }
 }

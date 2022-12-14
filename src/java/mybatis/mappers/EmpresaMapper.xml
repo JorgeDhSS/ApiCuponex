@@ -5,7 +5,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <mapper namespace="empresa">
     <insert id="registrar" parameterType="pojos.Empresa">
-        INSERT INTO medico (nombre, nombreComercial, representante, webPage, rfc, status, ciudad, cp, calle, numero, tel, email)
+        INSERT INTO enterprise (nombre, nombreComercial, representante, webPage, rfc, status, ciudad, cp, calle, numero, tel, email)
         VALUES (#{nombre}, #{nombreComercial}, #{representante}, #{webPage}, #{rfc}, 1, #{ciudad}, #{cp}, #{calle}, #{numero}, #{tel}, #{email})
     </insert>
     <update id="actualizar" parameterType="pojos.Empresa">
@@ -16,9 +16,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
     <select id="search" resultType="pojos.Empresa" parameterType="string">
         SELECT * FROM enterprise
-        WHERE (nombre LIKE #{string})
-        OR (representante LIKE #{string})
-        OR (rfc LIKE #{string})
+        WHERE nombre LIKE #{string}
+        OR representante LIKE #{string}
+        OR rfc LIKE #{string}
     </select>
     <select id="getEnterprise" resultType="pojos.Empresa" parameterType="int">
         SELECT * FROM enterprise WHERE id = #{id}

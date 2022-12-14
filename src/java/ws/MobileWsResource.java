@@ -294,7 +294,7 @@ public class MobileWsResource {
         {
             try 
             {
-                listaCategorias = conexionDB.selectList("promociones.getCategorias");
+                listaCategorias = conexionDB.selectList("promocion.getCategorias");
             }
             catch(Exception e)
             {

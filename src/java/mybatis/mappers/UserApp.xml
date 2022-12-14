@@ -5,17 +5,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <mapper namespace="user_app">
     <insert id="registrar" parameterType="pojos.UserApp">
-        INSERT INTO promocion (nombre, apellidoP, apellidoM, tel, correo, password, calle, numero, status, fechaNac, foto)
-        VALUES (#{nombre}, #{apellidoP}, #{apellidoM}, #{tel}, #{correo}, #{password}, #{calle}, #{numero}, #{status}, #{fechaNac}, #{foto})
+        INSERT INTO user_app (nombre, apellidoP, apellidoM, tel, correo, password, calle, numero, status, fechaNac, foto)
+        VALUES (#{nombre}, #{apellidoP}, #{apellidoM}, #{tel}, #{correo}, #{password}, #{calle}, #{numero}, 1, #{fechaNac}, #{foto})
     </insert>
     <update id="actualizar" parameterType="pojos.UserApp">
-        UPDATE promocion SET nombre = #{nombre}, apellidoP = #{apellidoP}, apellidoM = #{apellidoM}, tel = #{tel}, password = #{password}, calle = #{calle}, numero = #{numero}, fechaNac = #{fechaNac}, foto = #{foto} WHERE id = #{id} 
+        UPDATE user_app SET nombre = #{nombre}, apellidoP = #{apellidoP}, apellidoM = #{apellidoM}, tel = #{tel}, password = #{password}, calle = #{calle}, numero = #{numero}, fechaNac = #{fechaNac}, foto = #{foto} WHERE id = #{id} 
     </update>
     <select id="login" resultType="pojos.UserApp" parameterType="pojos.UserApp">
         SELECT correo FROM user_app WHERE correo = #{correo} AND password = #{password}
     </select>
     <select id="getUser" resultType="pojos.UserApp" parameterType="int">
-        SELECT * FROM user_system WHERE id = #{idUsuario}
+        SELECT * FROM user_app WHERE id = #{idUsuario}
     </select>
     <update id="subirFoto" parameterType="map">
         UPDATE user_app SET foto = #{foto} WHERE id = #{idUsuario} 
