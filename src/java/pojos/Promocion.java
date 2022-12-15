@@ -15,6 +15,7 @@ public class Promocion {
     private String foto;
     private String fechaIni;
     private String fechaFin;
+    private String empresa;
     private String descripcion;
     private String restricciones; 
     private Integer tipo;
@@ -157,4 +158,14 @@ public class Promocion {
     public void setFoto(String foto) {
         this.foto = foto;
     }
+
+    public String getEmpresa() {
+        return empresa;
+    }
+
+    public void setEmpresa(String empresa) {
+        this.empresa = empresa;
+    }
+    
+    
 }

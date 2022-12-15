@@ -34,11 +34,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         SELECT * FROM categorias
     </select>
     <select id="byCategoria" resultType="pojos.Promocion" parameterType="int">
-        SELECT nombre, fechaIni, fechaFin, tipo, empresa.nombre as 'empresa' FROM promocion INNER JOIN empresa ON promocion.enterprise_id = empresa.id
-        WHERE categoria_id = #{categoria_id}
+        SELECT promocion.id, promocion.nombre, DATE_FORMAT(fechaIni, "%d/%m/%Y") AS 'fechaIni', DATE_FORMAT(fechaFin, "%d/%m/%Y") AS 'fechaFin', tipo, enterprise.nombre as 'empresa' FROM promocion INNER JOIN enterprise ON promocion.enterprise_id = enterprise.id
+        WHERE categoria = #{categoria_id}
     </select>
     <select id="details" resultType="pojos.Promocion" parameterType="int">
-        SELECT nombre, descripcion, fechaIni, fechaFin, restricciones, tipo, porcentaje, costo FROM promocion 
+        SELECT nombre, descripcion, DATE_FORMAT(fechaIni, "%d/%m/%Y") AS 'fechaIni', DATE_FORMAT(fechaFin, "%d/%m/%Y") AS 'fechaFin', restricciones, tipo, porcentaje, costo FROM promocion 
         WHERE id = #{id}
     </select>
     <select id="obtenerFoto" parameterType="int" resultType="pojos.Promocion">

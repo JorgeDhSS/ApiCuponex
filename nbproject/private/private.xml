@@ -5,6 +5,7 @@
         <group>
             <file>file:/C:/APICuponex/src/java/pojos/UserSystem.java</file>
             <file>file:/C:/APICuponex/src/java/pojos/Promocion.java</file>
+            <file>file:/C:/APICuponex/src/java/pojos/Categoria.java</file>
             <file>file:/C:/APICuponex/src/java/ws/AdminWsResource.java</file>
             <file>file:/C:/APICuponex/src/java/mybatis/MyBatisUtil.java</file>
             <file>file:/C:/APICuponex/src/java/mybatis/mappers/UserSystemMapper.xml</file>
