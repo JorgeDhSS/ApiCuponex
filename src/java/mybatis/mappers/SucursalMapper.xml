@@ -27,4 +27,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         SELECT * FROM sucursal
         WHERE enterprise_id = #{id}
     </select>
+    <select id="getSucursales" resultType="pojos.Sucursal" >
+        SELECT * FROM sucursal;
+    </select>
 </mapper>

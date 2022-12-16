@@ -23,4 +23,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="getEnterprise" resultType="pojos.Empresa" parameterType="int">
         SELECT * FROM enterprise WHERE id = #{id}
     </select>
+    <select id="getEnterprises" resultType="pojos.Empresa">
+        SELECT * FROM enterprise;
+    </select>
 </mapper>
