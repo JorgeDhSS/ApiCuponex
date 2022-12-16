@@ -2,7 +2,7 @@ package pojos;
 
 public class UserSystem {
     
-    private Integer id;
+    private Integer idUsuario;
     private String nombre;
     private String apellidoP;
     private String apellidoM;
@@ -24,12 +24,12 @@ public class UserSystem {
     }
 
 
-    public Integer getId() {
-        return id;
+    public Integer getIdUsuario() {
+        return idUsuario;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setIdUsuario(Integer idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     public Integer getStatus() {

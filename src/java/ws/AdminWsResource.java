@@ -21,7 +21,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 import mybatis.MyBatisUtil;
 import org.apache.ibatis.session.SqlSession;
-import pojos.Categoria;
 import pojos.Empresa;
 import pojos.Promocion;
 import pojos.Respuesta;
@@ -268,7 +267,7 @@ public class AdminWsResource {
     {
         Respuesta respuestaWs = new Respuesta();
         UserSystem newUser = new UserSystem();
-        newUser.setId(idUsuario);
+        newUser.setIdUsuario(idUsuario);
         newUser.setNombre(nombre);
         newUser.setApellidoP(apellidoP);
         newUser.setApellidoM(apellidoM);
@@ -313,7 +312,7 @@ public class AdminWsResource {
     @Path("user/delete")
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
-    public Respuesta deleteUser(@FormParam("id") Integer idUsuario)
+    public Respuesta deleteUser(@FormParam("idUsuario") Integer idUsuario)
     {
         Respuesta respuestaWs = new Respuesta();
         SqlSession conexionDB = MyBatisUtil.getSession();
@@ -323,7 +322,6 @@ public class AdminWsResource {
             {
                 int respuesta = conexionDB.update("user_system.eliminar", idUsuario);
                 conexionDB.commit();
-                System.out.println(respuesta);
                 if(respuesta > 0)
                 {
                     respuestaWs.setError(false);
@@ -350,7 +348,6 @@ public class AdminWsResource {
             respuestaWs.setError(true);
             respuestaWs.setMensaje("El usuario no se ha eliminado, error de conexión");
         }
-        
         return respuestaWs;
     }
     
@@ -580,31 +577,6 @@ public class AdminWsResource {
         return empresa;
     }
     
-    @Path("enterprise/all")
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<Empresa> enterprisesData()
-    {
-        List<Empresa> listaEmpresas = null;
-        SqlSession conexionDB = MyBatisUtil.getSession();
-        if(conexionDB != null)
-        {
-            try 
-            {
-                listaEmpresas = conexionDB.selectList("empresa.getEnterprises");
-            }
-            catch(Exception e)
-            {
-                e.printStackTrace();
-            }
-            finally
-            {
-                conexionDB.close();
-            }
-        }
-        return listaEmpresas;
-    }
-    
     @Path("sucursal/create")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
@@ -807,31 +779,6 @@ public class AdminWsResource {
             respuestaWs.setMensaje("La sucursal no se ha eliminado, error de conexión");
         }
         return respuestaWs;
-    }
-    
-    @Path("sucursal/all")
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<Sucursal> sucursalesData()
-    {
-        List<Sucursal> listaSucursales = null;
-        SqlSession conexionDB = MyBatisUtil.getSession();
-        if(conexionDB != null)
-        {
-            try 
-            {
-                listaSucursales = conexionDB.selectList("sucursal.getSucursales");
-            }
-            catch(Exception e)
-            {
-                e.printStackTrace();
-            }
-            finally
-            {
-                conexionDB.close();
-            }
-        }
-        return listaSucursales;
     }
     
     @Path("promocion/create")
@@ -1172,30 +1119,5 @@ public class AdminWsResource {
             }
         }
         return promo;
-    }
-    
-    @Path("category/all")
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<Categoria> categorysData()
-    {
-        List<Categoria> listaSucursales = null;
-        SqlSession conexionDB = MyBatisUtil.getSession();
-        if(conexionDB != null)
-        {
-            try 
-            {
-                listaSucursales = conexionDB.selectList("categoria.getCategorias");
-            }
-            catch(Exception e)
-            {
-                e.printStackTrace();
-            }
-            finally
-            {
-                conexionDB.close();
-            }
-        }
-        return listaSucursales;
     }
 }
