@@ -12,10 +12,12 @@ package pojos;
 public class Respuesta {
     private Boolean error;
     private String mensaje;
+    private UserApp user;
 
-    public Respuesta(Boolean error, String mensaje) {
+    public Respuesta(Boolean error, String mensaje, UserApp user) {
         this.error = error;
         this.mensaje = mensaje;
+        this.user = user;
     }
 
     public Respuesta() {
@@ -36,6 +38,12 @@ public class Respuesta {
     public void setMensaje(String mensaje) {
         this.mensaje = mensaje;
     }
-    
-    
+
+    public UserApp getUser() {
+        return user;
+    }
+
+    public void setUser(UserApp user) {
+        this.user = user;
+    }
 }

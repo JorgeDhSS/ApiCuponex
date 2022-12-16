@@ -59,6 +59,7 @@ public class MobileWsResource {
                 {
                     respuesta.setError(false);
                     respuesta.setMensaje("Login correcto");
+                    respuesta.setUser(usuarios.get(0));
                 }
                 else
                 {
@@ -106,18 +107,40 @@ public class MobileWsResource {
         {
             try 
             {
-                int resultado = conexionDB.insert("user_app.registrar", newUser);
+                List<UserApp> usuariosWithMail = conexionDB.selectList("user_app.getUserByEmail", correo);
                 conexionDB.commit();
-                if(resultado > 0)
+                conexionDB.close();
+                SqlSession conexionDB2 = MyBatisUtil.getSession();
+                if(conexionDB2 != null)
                 {
-                    respuestaWs.setError(false);
-                    respuestaWs.setMensaje("El usuario ha sido registrado");
+                    if(usuariosWithMail.size() > 0)
+                    {
+                        respuestaWs.setError(true);
+                        respuestaWs.setMensaje("Este correo ya está en uso");
+                    }
+                    else
+                    {
+                        int resultado = conexionDB2.insert("user_app.registrar", newUser);
+                        conexionDB2.commit();
+                        if(resultado > 0)
+                        {
+                            respuestaWs.setError(false);
+                            respuestaWs.setMensaje("El usuario ha sido registrado");
+                        }
+                        else
+                        {
+                            respuestaWs.setError(true);
+                            respuestaWs.setMensaje("No se ha podido registrar el usuario");
+                        }
+
+                    }
                 }
                 else
                 {
                     respuestaWs.setError(true);
-                    respuestaWs.setMensaje("No se ha podido registrar el usuario");
+                    respuestaWs.setMensaje("No se ha podido registrar el usuario, error de conexión");
                 }
+                conexionDB2.close();
             }
             catch(Exception e)
             {

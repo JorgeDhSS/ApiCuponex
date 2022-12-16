@@ -12,7 +12,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         UPDATE user_app SET nombre = #{nombre}, apellidoP = #{apellidoP}, apellidoM = #{apellidoM}, tel = #{tel}, password = #{password}, calle = #{calle}, numero = #{numero}, fechaNac = #{fechaNac}, foto = #{foto} WHERE id = #{id} 
     </update>
     <select id="login" resultType="pojos.UserApp" parameterType="pojos.UserApp">
-        SELECT correo FROM user_app WHERE correo = #{correo} AND password = #{password}
+        SELECT id, correo FROM user_app WHERE correo = #{correo} AND password = #{password}
     </select>
     <select id="getUser" resultType="pojos.UserApp" parameterType="int">
         SELECT * FROM user_app WHERE id = #{idUsuario}
@@ -22,5 +22,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
     <select id="obtenerFoto" parameterType="int" resultType="pojos.UserApp">
         SELECT TO_BASE64(foto) as 'foto' FROM user_app WHERE id = #{id}
+    </select>
+    <select id="getUserByEmail" resultType="pojos.UserApp" parameterType="String">
+        SELECT * FROM user_app WHERE correo = #{mail}
     </select>
 </mapper>
